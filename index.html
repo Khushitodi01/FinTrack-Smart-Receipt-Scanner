@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FinTrack — Smart Receipt Scanner</title>
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Tesseract.js -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <h1>FinTrack — Smart Receipt Scanner</h1>
+        <p class="muted">
+          Upload receipts and automatically extract amount, date, and merchant
+          details.
+        </p>
+      </header>
+
+      <section class="top-row">
+        <div class="card">
+          <h3>Balance (This Month)</h3>
+          <p id="balance">₹0.00</p>
+        </div>
+        <div class="card">
+          <h3>Spent This Month</h3>
+          <p id="today-spent">₹0.00</p>
+        </div>
+      </section>
+
+      <section class="controls">
+        <form id="tx-form">
+          <select id="type">
+            <option value="expense">Expense</option>
+            <option value="income">Income</option>
+          </select>
+
+          <input id="amount" type="number" step="0.01" placeholder="Amount" />
+          <input id="desc" type="text" placeholder="Description" />
+
+          <select id="category">
+            <option value="food">Food</option>
+            <option value="transport">Transport</option>
+            <option value="shopping">Shopping</option>
+            <option value="salary">Salary</option>
+            <option value="other">Other</option>
+          </select>
+
+          <button type="submit" class="btn">Add</button>
+        </form>
+      </section>
+
+      <section class="ocr-section card">
+        <h2>Scan Receipt</h2>
+
+        <div class="ocr-controls">
+          <input type="file" id="image-file" accept="image/*" />
+
+          <div class="ocr-actions">
+            <button id="start-ocr" class="btn">
+              Read & Add Transaction
+            </button>
+            <button id="use-sample" class="btn alt">Load Sample</button>
+            <button id="show-last-text" class="btn alt">
+              Show OCR Text
+            </button>
+          </div>
+        </div>
+
+        <div id="ocr-logger" class="muted">No OCR run yet.</div>
+      </section>
+
+      <section class="main">
+        <div class="tx-list card">
+          <h3>
+            Transactions <small id="tx-count"></small>
+          </h3>
+
+          <ul id="transactions"></ul>
+
+          <div class="tx-actions">
+            <input type="file" id="csvFile" accept=".csv" />
+            <button id="import-csv" class="btn small">
+              Import CSV
+            </button>
+            <button id="clear-all" class="btn small alt danger">
+              Clear All
+            </button>
+          </div>
+        </div>
+
+        <div class="chart card">
+          <h3>Spending by Category</h3>
+          <canvas id="categoryChart"></canvas>
+        </div>
+      </section>
+
+      <footer class="muted">
+        Frontend prototype • Data stored in browser (localStorage)
+      </footer>
+    </div>
+
+    <script>
+      window.SAMPLE_IMAGE_PATH =
+        window.SAMPLE_IMAGE_PATH || "/mnt/data/sample_pharmacy.png";
+    </script>
+
+    <script src="app.js"></script>
+  </body>
+</html>
